@@ -6,7 +6,7 @@
   <title>Movie Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -22,14 +22,14 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+    // ─── REPLACE WITH YOUR FIREBASE CONFIG ───────────────────────────────────
     const firebaseConfig = {
-      apiKey: "AIzaSyBcbQ0Wf0rRGvpmAtINsKD_MpZHk5EXVho",
-      authDomain: "movie-tracker-de266.firebaseapp.com",
-      projectId: "movie-tracker-de266",
-      storageBucket: "movie-tracker-de266.firebasestorage.app",
-      messagingSenderId: "802677373195",
-      appId: "1:802677373195:web:5fc530542f353ee2650a0e",
-      measurementId: "G-0JVVCE17WZ"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
     // ─────────────────────────────────────────────────────────────────────────
 
