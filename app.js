@@ -36,26 +36,45 @@ function Toast({ message }) {
 
 // ─── Add Movie Modal ───────────────────────────────────────────────────────────
 
+const GENRES = [
+  "Action", "Adventure", "Animation", "Comedy", "Crime",
+  "Documentary", "Drama", "Fantasy", "Horror", "Mystery",
+  "Romance", "Sci-Fi", "Thriller", "Western"
+];
+
+function todayStr() {
+  return new Date().toISOString().split("T")[0];
+}
+
 function AddMovieModal({ onClose, onSave }) {
-  const [title, setTitle]   = useState("");
-  const [poster, setPoster] = useState(null);
-  const [rating, setRating] = useState(0);
-  const [notes, setNotes]   = useState("");
-  const [saving, setSaving] = useState(false);
+  const [title, setTitle]       = useState("");
+  const [poster, setPoster]     = useState(null);
+  const [rating, setRating]     = useState(0);
+  const [notes, setNotes]       = useState("");
+  const [genre, setGenre]       = useState("");
+  const [watchedDate, setWatchedDate] = useState(todayStr());
+  const [saving, setSaving]     = useState(false);
   const fileRef = useRef();
 
   function handleFile(e) {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => setPoster(ev.target.result); // base64
+    reader.onload = ev => setPoster(ev.target.result);
     reader.readAsDataURL(file);
   }
 
   async function handleSave() {
     if (!title.trim()) return;
     setSaving(true);
-    await onSave({ title: title.trim(), poster: poster || null, rating, notes: notes.trim() });
+    await onSave({
+      title: title.trim(),
+      poster: poster || null,
+      rating,
+      notes: notes.trim(),
+      genre,
+      watchedDate
+    });
     setSaving(false);
   }
 
@@ -83,6 +102,26 @@ function AddMovieModal({ onClose, onSave }) {
               ? <img src={poster} alt="preview" className="poster-preview" />
               : <p>Click to upload an image</p>
             }
+          </div>
+        </div>
+
+        <div className="field-row">
+          <div className="field">
+            <label>Genre</label>
+            <select className="genre-select" value={genre} onChange={e => setGenre(e.target.value)}>
+              <option value="">— Select —</option>
+              {GENRES.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
+          </div>
+
+          <div className="field">
+            <label>Date Watched</label>
+            <input
+              type="date"
+              className="date-input"
+              value={watchedDate}
+              onChange={e => setWatchedDate(e.target.value)}
+            />
           </div>
         </div>
 
@@ -118,6 +157,10 @@ function AddMovieModal({ onClose, onSave }) {
 // ─── Movie Card ────────────────────────────────────────────────────────────────
 
 function MovieCard({ movie, onDelete }) {
+  const displayDate = movie.watchedDate
+    ? new Date(movie.watchedDate + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+    : null;
+
   return (
     <div className="card">
       {movie.poster
@@ -126,8 +169,10 @@ function MovieCard({ movie, onDelete }) {
       }
       <div className="card-overlay">
         <div className="card-title">{movie.title}</div>
+        {movie.genre && <div className="card-genre">{movie.genre}</div>}
         <StarDisplay value={movie.rating} />
         {movie.notes && <div className="card-notes">{movie.notes}</div>}
+        {displayDate && <div className="card-date">Watched {displayDate}</div>}
         <button className="card-delete" onClick={() => onDelete(movie.id)}>Remove</button>
       </div>
     </div>
