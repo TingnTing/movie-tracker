@@ -62,7 +62,7 @@ function AddMovieModal({ onClose, onSave }) {
   return (
     <div className="overlay" onClick={e => e.target === e.currentTarget && onClose()}>
       <div className="modal">
-        <h2>Add a Movie</h2>
+        <h2>Add a Title</h2>
 
         <div className="field">
           <label>Title</label>
@@ -122,15 +122,13 @@ function MovieCard({ movie, onDelete }) {
     <div className="card">
       {movie.poster
         ? <img src={movie.poster} alt={movie.title} className="card-poster" />
-        : <div className="card-poster-placeholder">🎬</div>
+        : <div className="card-poster-placeholder">🎬<span>No Poster</span></div>
       }
-      <div className="card-body">
+      <div className="card-overlay">
         <div className="card-title">{movie.title}</div>
         <StarDisplay value={movie.rating} />
         {movie.notes && <div className="card-notes">{movie.notes}</div>}
-        <button className="card-delete" onClick={() => onDelete(movie.id)}>
-          Remove
-        </button>
+        <button className="card-delete" onClick={() => onDelete(movie.id)}>Remove</button>
       </div>
     </div>
   );
@@ -212,13 +210,13 @@ function App() {
   return (
     <>
       <header>
-        <h1>Movie<span>.</span>Log</h1>
-        <span className="movie-count">{movies.length} film{movies.length !== 1 ? "s" : ""}</span>
+        <div className="logo">FlixLog</div>
+        <span className="movie-count">{movies.length} title{movies.length !== 1 ? "s" : ""}</span>
       </header>
 
-      <main className="app-body">
-        {error && <div className="error-banner">{error}</div>}
-
+      <div className="hero">
+        <div className="hero-title">My Watchlist</div>
+        <div className="hero-sub">Your personal movie collection</div>
         <div className="controls">
           <div className="search-wrap">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -227,36 +225,41 @@ function App() {
             <input
               type="text"
               className="search-input"
-              placeholder="Search movies…"
+              placeholder="Search titles…"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
-
           <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
             <option value="newest">Newest first</option>
             <option value="rating-high">Rating: high → low</option>
             <option value="rating-low">Rating: low → high</option>
             <option value="title">Title A–Z</option>
           </select>
-
-          <button className="btn-add" onClick={() => setShowForm(true)}>+ Add Movie</button>
+          <button className="btn-add" onClick={() => setShowForm(true)}>+ Add Title</button>
         </div>
+      </div>
+
+      <main className="app-body">
+        {error && <div className="error-banner">{error}</div>}
 
         {loading ? (
-          <div className="loading">Loading your films…</div>
+          <div className="loading">Loading your titles…</div>
         ) : filtered.length === 0 ? (
           <div className="empty">
-            <div className="empty-icon">🎞</div>
-            <h3>{search ? "No results found" : "No movies yet"}</h3>
+            <div className="empty-icon">🎬</div>
+            <h3>{search ? "No results found" : "Your watchlist is empty"}</h3>
             <p>{search ? "Try a different title." : "Add your first film to get started."}</p>
           </div>
         ) : (
-          <div className="grid">
-            {filtered.map(m => (
-              <MovieCard key={m.id} movie={m} onDelete={handleDelete} />
-            ))}
-          </div>
+          <>
+            <div className="section-label">All Titles</div>
+            <div className="grid">
+              {filtered.map(m => (
+                <MovieCard key={m.id} movie={m} onDelete={handleDelete} />
+              ))}
+            </div>
+          </>
         )}
       </main>
 
