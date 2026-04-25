@@ -255,13 +255,13 @@ function App() {
   return (
     <>
       <header>
-        <div className="logo">FlixLog</div>
+        <div className="logo">Letterbox</div>
         <span className="movie-count">{movies.length} title{movies.length !== 1 ? "s" : ""}</span>
       </header>
 
       <div className="hero">
-        <div className="hero-title">My Watchlist</div>
-        <div className="hero-sub">Your personal movie collection</div>
+        <div className="hero-title">Watched List</div>
+        <div className="hero-sub">Personal movie collection</div>
         <div className="controls">
           <div className="search-wrap">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
